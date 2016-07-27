@@ -61,19 +61,15 @@ if __name__ == "__main__":
 
 
 
-    # Test pretrained model
-    print "About to do CNN stuff"
+    # Compile and test model
     model = networks.temporalNet()
-    sgd = rmsprop()
-    model.compile(optimizer=sgd, loss='mean_squared_error', metrics=['accuracy'])
+    opt = rmsprop()
+    model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
     hist = model.fit(np.asarray(x_train_list), y_train, nb_epoch=8, verbose=1)
-    print "Fit complete"
-
     out = model.predict_classes(np.asarray(x_test_list))
-    print "Predicted model"
     score = model.evaluate(np.asarray(x_test_list), y_test)
 
+    #print output
     print(out)
     print np.uint8(y_test_orig)
-
     print score
