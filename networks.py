@@ -13,12 +13,11 @@ from keras.layers.normalization import BatchNormalization
 
 def temporalNet(weights=None):
     model = Sequential()
-
+    #3D convolutional layer with 32x32 optical flow as input
     model.add(Convolution3D(30, 20, 17, 17, subsample=(4,2,2), input_shape=(1, 120,32,32)))
     model.add(Activation(LeakyReLU()))
     model.add(BatchNormalization())
     model.add(MaxPooling3D(pool_size=(13, 2, 2), strides=(13,2, 2)))
-
     model.add(Reshape((60, 4, 4)))
 
 
@@ -46,15 +45,11 @@ def temporalNet(weights=None):
 def polegsNet(weights=None):
     model = Sequential()
     model.add(Convolution3D(128, 2, 50, 10, activation='relu', input_shape=(1, 2, 50, 60)))
-    #model.add(Activation(ELU()))
-    #model.add(BatchNormalization())
     model.add(Reshape((128, 1, 51)))
     model.add(MaxPooling2D(pool_size=(1,20), strides=(1,10)))
     model.add(Flatten())
 
     model.add(Dense(128, activation='sigmoid'))
-    #model.add(Dropout(0.2))
-    #model.add(BatchNormalization())
     model.add(Dense(4, activation='softmax'))
 
 
